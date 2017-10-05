@@ -1,0 +1,57 @@
+
+<!-- registration form / edit profile -->
+<div class="center-block form-container-style border-gray" id="register-id">
+  <div class="form-style">
+    <div class="title-style">
+      <span>Your Profile</span>
+      <a routerLink="/home"><img src="../assets/logo.png" class="img img-rounded pull-right logo"></a>
+    </div>
+    <div>
+      <label class="field-label-style">Login name</label>
+      <input class="field-style" placeholder="your screen name" required [disabled]="loginUser"
+             [(ngModel)]="profileLoginName">
+
+      <label class="field-label-style">Password</label>
+      <input type="password" class="field-style" placeholder="1234passwOrd" required
+             [(ngModel)]="profilePassword">
+      <label class="field-label-style">Confirm Password</label>
+      <input type="password" class="field-style" required
+             [(ngModel)]="profilePasswordConfirm">
+
+      <label class="field-label-style">Email</label>
+      <input type="email" class="field-style" placeholder="foo@bar.com"
+             [(ngModel)]="profileEmail">
+
+      <label class="field-label-style">Country</label>
+      <select class="combo" [(ngModel)]="profileCountry"
+              (change)="handleCountryChange()">{{profileCountry}}
+        <option *ngFor="let COUNTRY of getCountryList()"
+                [ngValue]="COUNTRY">{{COUNTRY}}
+        </option>
+      </select>
+
+      <label class="field-label-style">State</label>
+      <select class="combo" [(ngModel)]="profileState"
+              (change)="handleStateChange()">{{profileState}}
+        <option *ngFor="let STATE of getStatelistByCountry(profileCountry)"
+                [ngValue]="STATE">{{STATE}}</option>
+      </select><br/>
+
+      <label class="field-label-style">City</label>
+      <select class="combo-city" [(ngModel)]="profileCity">{{profileCity}}
+        <option *ngFor="let CITY of getCitylistByState(profileState)"
+                [ngValue]="CITY">{{CITY}}</option>
+      </select>
+      <br/>
+
+      <label class="field-label-style">Gender</label>
+      <input type="radio" class="gender" value="male" [(ngModel)]="profileGender">Male
+      <input type="radio" class="gender" value="female" [(ngModel)]="profileGender">Female
+      <br/>
+      <input type="checkbox" id="agree-id" checked [(ngModel)]="profileAgree">Agree to terms
+      <input type="submit" class="field-style signup-style" value="Save" (click)="saveProfile()">
+    </div>
+  </div>
+</div>
+
+

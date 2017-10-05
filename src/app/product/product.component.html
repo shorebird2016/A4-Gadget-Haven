@@ -1,0 +1,40 @@
+<app-header></app-header>
+
+<div class="container-fluid" *ngIf="curProduct">
+  <div class="row" id="PROD_1">
+    <h3 class="heading-3">{{curProduct.name}}</h3>
+
+    <!-- bstp columns for image/video pane with buttons -->
+    <figure class="col-sm-7">
+      <img src="{{'../assets/product/' + curProduct.image_url + activeImage }}"
+           width="100%" class="product-image">
+
+      <!-- a row to thumbnails -->
+      <div class="thumb-container" *ngFor="let THUMB of curProduct.images; let idx = index;">
+        <img class="thumb" src="{{'../assets/product/' + curProduct.image_url +  + curProduct.images[idx] }}"
+             (click)="clickThumb(idx)">
+      </div>
+    </figure>
+
+    <!-- bstp column for detail pane -->
+    <article class="col-sm-5 feature">
+      <p>{{curProduct.description}}</p>
+      <ul class="feature-list">
+        <li *ngFor="let FEATURE of curProduct.feature">{{FEATURE}}</li>
+      </ul>
+    </article>
+  </div>
+
+  <div class="row">
+    <div class="panel-footer prd-footer">
+      Our Price: <b>${{curProduct.price}}</b> ({{getProductStatus(curProduct)}})
+      <span *ngIf="curProduct.inventory > 0">Quantity:</span>
+      <select *ngIf="curProduct.inventory > 0" [(ngModel)]="purchaseQuantity">{{purchaseQuantity}}
+        <option *ngFor="let QTY of comboList" [ngValue]="QTY">{{QTY}}</option>
+      </select>
+      <button class="btn-main btn-primary"  *ngIf="curProduct.inventory > 0" (click)="addToCart(curProduct.id)">
+        Add to cart</button></div>
+  </div>
+</div>
+
+<app-footer></app-footer>

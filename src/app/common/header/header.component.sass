@@ -1,0 +1,118 @@
+
+@keyframes spinning
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)
+
+.logo
+  width: 60px
+  display: inline-block
+  border-radius: 50%
+  animation: spinning 50s linear infinite
+
+nav
+  font-size: 10pt
+
+.navbar
+  margin-bottom: 0
+
+.navbar-nav
+  float: none
+  li i img
+    padding-top: 15px
+    padding-bottom: 15px
+  > .dropdown
+    margin-top: 5px
+    cursor: pointer
+
+.navbar-brand
+  padding: 0
+
+.navbar-header:hover
+  transform: scale(2) translate(30%, 40%)
+
+.navbar-text
+  font-size: 6pt
+  max-width: 35px
+  max-height: 35px
+  opacity: 1
+
+#navbar-menu
+  position: absolute
+  top: 55px
+  left: -20px
+  width: 140px
+  background: lightgray
+  list-style-type: none
+  margin: 0
+  padding: 0
+  li
+    cursor: pointer
+    padding: 10px 5px 10px 5px
+  li:hover
+    background: lightblue
+
+.navbar-form
+  width: 60%
+  padding: 0
+  display: inline-block
+  margin-top: 15px
+
+.srch-field
+  border-radius: 10px 10px 10px 10px
+  min-width: 85%
+
+.srch-btn
+  border-radius: 0 10px 10px 0
+  margin-left: -10px
+
+.srch-result
+  .panel-body
+    background: #f5f5f5
+    position: fixed
+    list-style-type: none
+    padding: 10px
+    margin: 0
+    top: 50px
+    left: 250px
+    z-index: 2000
+    min-width: 50%
+    min-height: 100px
+    max-height: 250px
+    border: 1px lightgray solid
+    border-radius: 5px
+    overflow-y: scroll
+  li p
+    display: inline-block
+    cursor: pointer
+    margin: 0
+
+li img
+  width: 30px
+  height: 30px
+
+.srch-item
+  padding: 5px
+
+.srch-item:hover
+  background: lightblue
+
+.menubar
+  background: lightyellow
+  height: 25px
+  padding: 5px 0 5px 0
+  >ul
+    display: inline-block
+  >ul > li
+    display: inline-block
+    padding: 0 10px 0 10px
+  span:first-child
+    color: purple
+    font-size: 120%
+    padding: 0 30px 0 10px
+  span:last-child
+    float: right
+    color: purple
+    font-size: 120%
+    padding-right: 10px

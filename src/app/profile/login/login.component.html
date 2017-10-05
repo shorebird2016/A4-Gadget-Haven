@@ -1,0 +1,34 @@
+<!--for /login route partial HTML, still share same controller-->
+<div class="center-block form-container-style border-gray">
+  <div class="form-style">
+    <div class="title-style">
+      <span>Log in</span>
+      <a routerLink="/home">
+        <img src="../assets/logo.png" class="img img-rounded pull-right logo"></a>
+    </div>
+    <form>
+      <label class="field-label-style">User ID</label>
+      <input placeholder="foo-bar123" #login_id class="field-style">
+      <label class="field-label-style">Password</label>
+      <input type="password" class="field-style" placeholder="1234passwOrd" #login_pwd>
+      <input type="button" class="field-style signup-style white" value="Log in"
+             (click)="login(login_id.value, login_pwd.value)">
+      <div class="forget-pwd-style">
+        <a routerLink="/reset-pwd">Forget password?</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="center-block have-account-style gray">
+  <span>Don't have an account? <a routerLink="/account">Register new account</a></span>
+</div>
+
+<div #MSG_DLG id="msg-dlg-id">
+  <h3>Sorry! you are not registered!</h3><br/>
+
+  <h4>Please click link below to register first.</h4>
+  <a routerLink="/account">Register new account</a><br/>
+
+  <button class="btn btn-primary" (click)="hideDialog()">Close</button>
+</div>

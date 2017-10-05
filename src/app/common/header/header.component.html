@@ -1,0 +1,69 @@
+<!-- this is the header of several pages, all shared, use shoppingCtrl -->
+<!-- navigation bar across the top: logo, dropdown, search bar, icons -->
+<header>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+        <img src="../assets/logo.png" class="logo"></a>
+      <span class="navbar-text">Gadget Haven</span>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown">Category
+          <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li *ngFor="let CAT of categories">
+            <a (click)="showCategoryProducts(CAT)">{{CAT}}</a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- search widget -->
+      <div class="navbar-form navbar-left">
+        <input placeholder="your favorite items here..." class="form-control srch-field"
+               (ngModelChange)="searchStringChange($event)" [(ngModel)]="searchString">
+        <!--<button class="btn btn-primary srch-btn" (click)="startSearch()">Search</button>-->
+                <!--(keypress)="searchViaKeyPress($event.keyCode)" maybe later-->
+      </div>
+
+      <!-- buttons -->
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown">
+          <img src="../assets/header/profile.svg">
+          <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li *ngIf="loginUser"><a routerLink="/account">View/Edit Profile</a></li>
+          <li *ngIf="loginUser"><a routerLink="/history">My Purchases</a></li>
+          <li *ngIf="loginUser"><a class="divider"></a></li>
+          <li *ngIf="loginUser"><a routerLink="/home" (click)="logout()">Logout</a></li>
+          <li *ngIf="!loginUser"><a routerLink="/login">Login</a></li>
+        </ul>
+      </li>
+      <li><a routerLink="/cart"><img src="../assets/header/cart.svg"></a></li>
+    </ul>
+
+    <!-- secondary menu for promotional items-->
+    <nav class="menubar">
+      <span>{{curCategory}}</span>
+      <ul>
+        <li><a routerLink="/best_seller">Best Sellers</a></li>
+        <li><a routerLink="/new_arrival">New Arrivals</a></li>
+        <li><a routerLink="/on_sale">On Sale This Week</a></li>
+        <li><a routerLink="/featured">Featured</a></li>
+        <li><a routerLink="/deals">Last Minute Deal</a></li>
+      </ul>
+      <span *ngIf="loginUser">Welcome {{loginUser}} !</span>
+    </nav>
+  </nav>
+
+  <!--search list - most time hidden till someone types some search text-->
+  <section class="panel srch-result" *ngIf="showMatchList">
+    <ul class="panel-body">
+      <li *ngFor="let STR of matchingProducts; let idx = index" class="srch-item">
+        <img src="{{getThumbnailByName(STR)}}">
+        <p (click)="selectProduct(idx)">{{STR}}</p>
+      </li>
+    </ul>
+  </section>
+
+</header>

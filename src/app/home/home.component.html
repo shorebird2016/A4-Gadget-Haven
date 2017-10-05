@@ -1,0 +1,40 @@
+
+<app-header (filter)="updateProductList($event)"></app-header>
+
+<!-- a carousel for special items -->
+<section class="sb-carousel" *ngIf="curCarouselProduct">
+  <div class="sb-slider-box" [ngStyle]="styleSliderBoxLeft">
+    <img *ngFor="let IMG_NAME of carouselImages"
+         src="{{IMG_NAME}}" class="sb-slide-image">
+  </div>
+  <span id="nav-next" (click)="slideForward()" >&#8678;</span>
+  <span id="nav-prev" (click)="slideBackward()" >&#8680;</span>
+  <div class="sb-circle-box" [ngStyle]="styleCircleBox">
+    <button class="sb-circle" *ngFor="let IMG_NAME of carouselImages; let idx = index"
+            (click)="goToSlide(idx)" [ngStyle]="getOpacityObj(idx)"></button>
+  </div>
+  <!--jumbo text in the center of slide -->
+  <section class="sb-slider-caption">{{curCarouselProduct.name}}</section>
+  <div class="sb-slider-info"><span>{{curCarouselProduct.feature[0]}}</span></div>
+  <button class="sb-slider-ctrl" (click)="navToProduct(curCarouselProduct)">
+    Show Me More</button>
+</section>
+
+<!-- rows of cards with product description, price, high level attractions -->
+<section>
+  <div class="product-strip" *ngIf="productList">
+    <div class="panel panel-success" *ngFor="let PROD of productList; let idx = index">
+      <div class="panel-heading">{{PROD.name}}</div>
+      <div class="panel-body">
+        <a routerLink="/product" (click)="navToProduct(PROD)">
+          <img class="img img-rounded" src="{{'../assets/product/' + PROD.image_url + PROD.images[0]}}"></a>
+      </div>
+      <div class="panel-footer">${{PROD.price}}
+        <span class="pull-right">{{getProductStatus(PROD)}}</span></div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>
+
+<!--TODO replace anchor with button and (click) inside handler then navigate-->
