@@ -1,9 +1,81 @@
 # ShoppingSite
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.6.
+This project features a shopping site with the basic ability for registered users to browse
+products on sale and place orders.  This is part of the CodeGarage boot camp project initially developed
+under AnuglarJS (1.0) and subsequently converted to Angular 4.0. 
+
+Please refer to this github repository: https://github.com/shorebird2016/A4-Gadget-Haven
+
+Demo: TBD
+
+#### Sample Screen Shots
+![Home Page](doc/home.png)
+![Product Page](doc/product.png)
+![Shopping Cart Page](doc/cart.png)
+![Confirm Page](doc/confirm.png)
+![Login Page](doc/login.png)
+![Registration Page](doc/register.png)
+![Admin Page](doc/admin.png)
+
+#### Features
+- Fixed header with logo (animation), search bar, shopping cart icon, profile icon
+- User login/logout, editing profile, new user registration
+- Category dropdown to assist user search
+- User may type in search criteria and auto-complete
+- Randomly selected product photo in carousel, auto-sliding plus click navigation
+- Product thumbnail gallery, maybe filtered based on categories
+- Click navigation to full product page from home page
+- Shopping cart management with full CRUD ability
+- ....
+
+#### Folder Structure
+
+The source tree looks like this:
+```
+  doc/
+  e2e/
+  karma.conf.js
+  node_modules/
+  package.json
+  protractor.conf.js
+  README.md
+  src/
+    app/
+      app.component.css
+      app.component.html
+      app.component.spec.ts
+      app.component.ts
+      app.module.ts
+      cart/
+      checkout/
+      common/
+      home/
+      intf/
+      product/
+      profile/
+      reference/
+      svc
+    assets/
+      header/
+      logo.png
+      product/
+      products.json
+    environments
+    favicon.ico
+    index.html
+    main.ts
+    polyfills.ts
+    styles.css
+    test.ts
+    tsconfig.app.json
+    tsconfig.spec.json
+    typings.d.ts    
+  tsconfig.json
+  tslint.json      
+```
 
 ## Dev Log
-[2017-09-17] 3.5
+[2017-09-17] 3.5h
  - Start new standalone project, goal is to port from A1 project from CodeGarage class {0.5h}
  - Build a temporary navigation to debug separate routes, tear down later
  - <NOTE>After adding new libraries(such as bootstrap), must stop server, restart
@@ -20,18 +92,18 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
  - For some reasons, AppComponent doesn't have life cycle callbacks {0.5h}
  - search type='search', new to me, a valid type, underneath when submit q=searchtrem will be sent to server;
    that's the only difference from type='text'.  MUST set 'name' otherwise nothing is sent.
-[2017-09-18] 4
+[2017-09-18] 4h
  - Start implementing product page, plan to upload git a few times each week {1h}
  - Remove previous thumbnail folder and full-image folders, combine into one {1h}
  - Add my own carousel onto the top middle, convert into A4 code, turns out ng-style is direct conversion {1.5h}
  - Tricky to set timer/interval because context change, use bind(this) on callbacks, also problem with multiple
    un-cancelled timers making sliding strange, this BUG seems to be created when clicking arrows,circles too fast{0.5h}
  - Make circles center horizontally and light up one at a time {0.5h}
-[2017-09-19] 2
+[2017-09-19] 2h
  - Port over footer, change google plus, facebook, twitter icons
  - Category filter using input/output between home and header component {1.5h}
  - Engage search by string, pop up search list {0.5h}
-[2019-09-20] 4.5
+[2019-09-20] 4.5h
  - Port over login page, reset password page, account page, no functions yet {1h}
  - Spent a lot of time trying to find new local storage wrapper in A4, angular-async-local-storage looks good,
    but no information about how to initialize it to LocalStorageDatabase. {1.5h}
@@ -44,20 +116,20 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
  - At a component's CTOR, inject ElementRef essentially provides DOM reference to self
       constructor(private elem: ElementRef...{1h}
 [2017-09-21]
- - Port Admin page, just the view, no data yet { 0.1h}
-[2017-09-22] 7.5
+ - Port Admin page, just the view, no data yet {0.1h}
+[2017-09-22] 7.5h
  In flight to Taiwan
  - Login page, why admin@admin.com always show up? After half an hour, give up, possibly chrome
    is remembering it {0.5h}
  - Work on getting account form to validate, country/state/city variations via select, radio button,
    checkbox..etc w/o online information
-     Figured out one way to do <select> - use (change) {{}} [ngValue], ngModel doesn't work
+     Figured out one way to do for select tag - use (change) {{}} [ngValue], ngModel doesn't work
     {3h}
  - Start local storage work, perfect for in the air, first register user, then read back, then
    show them all in admin view, then authenticate, then delete {3h}  
  - Loose ends with user account: at startup time, if user was logged in last time, 
    show logged in menus, logout action, close button {1h}
-[2017-09-26] 3
+[2017-09-26] 3h
  - Some basic testing, found many problems.{1h}
  - By accident, replace <form> with <div> not only remove the need for "name" attribute, also magically
    makes "ngModel" work as planned. Also [ngModel] works too.  Without "name" attr and "<form>", login name
@@ -68,7 +140,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
  - With clear mind, was able to make country/state/city combos working exactily right using ngModel
    plus a helper when dropdown is changed.{0.5h}
  Temporarily move on to big feature - product page, deal with accounts later
-[2017-09-28] 3.5
+[2017-09-28] 3.5h
  - Due to yesterday's success on making product service available as an Observable (in rxjx project),
    now I can make ProductService in this project into one and many component can listen to data w/o
    polling, the tasks (1)Add subject to product service (2)whenever data is read from external source,
@@ -87,7 +159,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
  - We can ONLY unsubscribe() a subscription, not Observable
  - Gradually working thru Home, Header, Account, Login components and all seem to work well with both product/storage
    services. {1h}
-[2017-09-29] 4
+[2017-09-29] 4h
  - FIX: if logged in, login name should not be editable in account page
  - FIX: update user in account page was adding the same user with updated info the 2nd time
  - FIX: update city of a user persists ok in LS, but header/account page still show old city for logged in user
@@ -99,7 +171,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
  - add item to cart from product page, cart items are persisted in LS, inc/dec/remove all seem to work {2h}  
  - Tonight I also prove that service can share data, as long as components don't buffer data, go directly to 
    service class.  So BehaviorSubject is only needed if data keeps on changing outside user control.
-[2017-09-30]
+[2017-09-30] 1h
  - End of quarter, one more quarter for 2017, good time to take a break from this project since other priorities
    such as job hunting starts to creep in.  There is an endless list of things that need to be done for any project.
    The only thing I can do is to keep the ideas below and may continue one day.  It's important to keep learning A4.
@@ -112,12 +184,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
    The TRICK - use finder to copy all (non hidden files) except node_modules over to new folder, then copy one
                hidden file .angular-cli.json, ng serve will work.  Otherwise this will fail with 
                "Cannot read property 'config' of null" 
- - Attempt to deplay to heroku, watch video first
 
 
 
 ==========================================N E X T=====S T E P S==========================================
 ### End to end testing
+ --- Attempt to deplay to heroku, watch video first
  --- To verify everything still works
  
 ### Product Page
