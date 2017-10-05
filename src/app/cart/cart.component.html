@@ -10,7 +10,8 @@
         <div class="cart-ctrl">
           <p class="cart-qty">Quantity: {{ITEM.quantity}}</p>
           <i class="fa fa-2x fa-plus-circle btn-icon" (click)="incItemQuantity(idx)"></i>
-          <i class="fa fa-2x fa-minus-circle btn-icon" (click)="decItemQuantity(idx)"></i>
+          <i class="fa fa-2x fa-minus-circle btn-icon" (click)="decItemQuantity(idx)"
+             [style.disabled]="getItemQuantity(idx) <= 0"></i>
           <i class="fa fa-2x fa-trash btn-icon" (click)="removeItem(idx)"></i>
         </div>
       </div>

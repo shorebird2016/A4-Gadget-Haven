@@ -38,17 +38,17 @@ export class CartComponent implements OnInit {
   }
   incItemQuantity(item_index) {this._cart_svc.incItemQuantity(item_index); }
   decItemQuantity(item_index) {this._cart_svc.decItemQuantity(item_index); }
-  removeItem(item_index) { this._cart_svc.removeItem(item_index); }
+  getItemQuantity(item_index) { return this._cart_svc.getItemQuantity(item_index); }
+  removeItem(item_index) {
+    if (this._cart_svc.getItemQuantity(item_index) === 0) { return; }
+    this._cart_svc.removeItem(item_index); }
   calcItemSubtotal(item) {
     const prod = this.getProductObj(item);
     return prod.price * item.quantity;
   }
   calcCartTotal() {
     const cd = this.getCartData(); let sum = 0;
-/*    for (let idx = 0; idx < cd.length; idx++) {
-      const prod = this.getProductObj(cd[idx]);
-      sum += prod.price * cd[idx].quantity;
-    }*/
+
     cd.forEach((item, idx) => {
       const prod = this.getProductObj(cd[idx]);
       sum += prod.price * cd[idx].quantity;

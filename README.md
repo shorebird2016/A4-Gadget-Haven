@@ -185,7 +185,9 @@ The source tree looks like this:
                hidden file .angular-cli.json, ng serve will work.  Otherwise this will fail with 
                "Cannot read property 'config' of null" 
 
-
+[2017-10-05]
+  - Bug: product page - quantity should not become minus when decrement
+  
 
 ==========================================N E X T=====S T E P S==========================================
 ### End to end testing

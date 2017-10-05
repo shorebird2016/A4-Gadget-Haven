@@ -34,7 +34,9 @@ export class CartService {
   }
   // -----U of CRUD for cart data-----
   incItemQuantity(item_index) { this.cartData[item_index].quantity++; }
-  decItemQuantity(item_index) { this.cartData[item_index].quantity--; }
+  decItemQuantity(item_index) {
+    if (this.cartData[item_index].quantity === 0) { return; }
+    this.cartData[item_index].quantity--; }
   // -----D of CRUD for cart data-----
   removeItem(item_index) { this.cartData.splice(item_index, 1); }
 
@@ -46,6 +48,9 @@ export class CartService {
       if (item.productId === product_id) { return item; }
     }
     return null;
+  }
+  getItemQuantity(index) {
+    return this.cartData[index].quantity;
   }
   // lower layer access
   getItem(key) { return this._svc.get(key); }
