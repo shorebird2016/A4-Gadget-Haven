@@ -6,7 +6,7 @@ under AnuglarJS (1.0) and subsequently converted to Angular 4.0.
 
 Please refer to this github repository: https://github.com/shorebird2016/A4-Gadget-Haven
 
-Demo: TBD
+Demo: https://shopping-26f5d.firebaseapp.com/
 
 #### Sample Screen Shots
 ![Home Page](doc/home.png)
