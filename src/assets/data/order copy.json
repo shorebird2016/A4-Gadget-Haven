@@ -1,0 +1,26 @@
+[
+  { "login": "jenny333", "order-id": "o-22137", "item": [
+    { "product-id": 1050, "quantity": 3 },
+    { "product-id": 1170, "quantity": 15 },
+    { "product-id": 1180, "quantity": 2 },
+    { "product-id": 1270, "quantity": 1 }
+  ]},
+
+  { "login": "tina777", "order-id": "o-113375", "item": [
+    { "product-id": 1400, "quantity": 1 },
+    { "product-id": 1300, "quantity": 10 }
+  ]},
+
+  { "login": "alex111", "order-id": "o-003177", "item": [
+    { "product-id": 1010, "quantity": 1 },
+    { "product-id": 1110, "quantity": 5 },
+    { "product-id": 1320, "quantity": 1 },
+    { "product-id": 1140, "quantity": 3 },
+    { "product-id": 1311, "quantity": 10 },
+    { "product-id": 1420, "quantity": 2 },
+    { "product-id": 1150, "quantity": 7 },
+    { "product-id": 1250, "quantity": 5 }
+  ]}
+
+]
+

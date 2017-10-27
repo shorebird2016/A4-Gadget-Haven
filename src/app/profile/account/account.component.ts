@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {StorageService} from '../../svc/storage.service';
 import {Router} from '@angular/router';
+import {UserService} from '../../svc/user.service';
 
 const StateList = [
   { country: 'US', state: ['CA', 'NV', 'OR' ] },
@@ -26,31 +26,32 @@ const CityList = [
 })
 
 export class AccountComponent implements OnInit, OnDestroy {
-  constructor(private _stor_svc: StorageService, private _router: Router) { }
+  constructor(private _user_svc: UserService, private _router: Router) { }
 
   subLiu; subUsers; // subscriptions
   users; // from storage service, full list
-  loginUser; // object
-  profileLoginName; // initially from storage service
+  loginUserObj; // object
+  usersRef; // Firebase user node reference
+  profileLogin; // initially from storage service
   profilePassword;
   profilePasswordConfirm;
   profileEmail;
   profileCountry = StateList[0].country;
   profileState = StateList[0].state[0];
   profileCity = CityList[0].city[0];
-  profileGender = 'male';
+  profileGender = 'M';
   profileAgree = 'on';
   msg;
 
   ngOnInit() {
     // attach to login user stream
-    this.subLiu = this._stor_svc.obtainLoginUserStream().subscribe(payload => {
-      console.log('[AccountComp] login user <= ', payload);
-      this.loginUser = payload;
-      this.profileLoginName = ''; // object can be null initially
-      if (this.loginUser) { // init fields
-        const usr_obj = this.loginUser;
-        this.profileLoginName = usr_obj.loginName;
+    this.subLiu = this._user_svc.getLoginUser().subscribe(payload => {
+      this.loginUserObj = (payload !== null) ? payload : null;
+      console.log('[AccountComp] login user <= ', this.loginUserObj.login);
+      this.profileLogin = ''; // object can be null initially
+      if (this.loginUserObj) { // init fields
+        const usr_obj = this.loginUserObj;
+        this.profileLogin = usr_obj.login;
         this.profilePassword = usr_obj.password;
         this.profilePasswordConfirm = usr_obj.password;
         this.profileEmail = usr_obj.email;
@@ -61,12 +62,14 @@ export class AccountComponent implements OnInit, OnDestroy {
       }
     });
 
-    // attach to users stream
-    this.subUsers = this._stor_svc.obtainUsersStream().subscribe(payload => {
+    // attach to users stream from Firbase and LocalStorage
+    this.usersRef = this._user_svc.getUserList();
+    this.subUsers = this.usersRef.subscribe(payload => {
       console.log('[AccountComp] users <= ', payload);
       this.users = payload;
     });
   }
+
   ngOnDestroy() {
     this.subLiu.unsubscribe();
     this.subUsers.unsubscribe();
@@ -74,14 +77,14 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   // if already login, consider an update, otherwise add new user
   saveProfile() {
-    if (!this.profileLoginName || this.profileLoginName === ''
-        || this.profileLoginName.length < 5) { // check length, alphanumeric
+    if (!this.profileLogin || this.profileLogin === ''
+        || this.profileLogin.length < 5) { // check length, alphanumeric
       const msg = 'Name must be at least 5 characters.  Please re-enter.';
       // showError('name-id', msg);
       // TODO...different ways to present error
       return false; // NOTE- must return false here to not continue
     }
-    const alpha_numeric = /^[a-zA-z0-9-_]+$/.test(this.profileLoginName);
+    const alpha_numeric = /^[a-zA-z0-9-_]+$/.test(this.profileLogin);
     if (!alpha_numeric) { // TODO...different ways to present error
       this.msg = 'Name must contain alpha-numeric, dash, underscore characters.  Please re-enter.';
       // showError('name-id', msg);
@@ -110,7 +113,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 
     // create object to save away
     const profile = {
-      loginName: this.profileLoginName,
+      login: this.profileLogin,
       password: this.profilePassword,
       email: this.profileEmail,
       country: this.profileCountry,
@@ -120,10 +123,16 @@ export class AccountComponent implements OnInit, OnDestroy {
     };
 
     // save/update LS
-    if (!this.loginUser) {
-      this._stor_svc.addUser(profile);
-    } else {
-      this._stor_svc.updateUser(profile);
+    if (this.loginUserObj.$value === null) { // add new record if no login
+      this.usersRef.push(profile);
+    } else { // update record
+      // find this user from list, get his/her key
+      const key = this.findUserByLogin(this.loginUserObj.login);
+      if (key) {
+        this.usersRef.set(key, profile);
+        // also update login user
+        this._user_svc.setLoginUser(profile);
+      }
     }
     this._router.navigate(['/home']);
   }
@@ -172,9 +181,9 @@ export class AccountComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  private findUserByLogin(login_name) {
+  private findUserByLogin(login) {
     for (let idx = 0; idx < this.users.length; idx++) {
-      if (login_name === this.users[idx].loginName) {
+      if (login === this.users[idx].login) {
         return this.users[idx];
       }
     }

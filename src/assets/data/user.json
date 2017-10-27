@@ -1,0 +1,65 @@
+{
+  "ux-776621" : {
+    "city" : "Cupertino",
+    "country" : "US",
+    "email" : "alex111@gmail.com",
+    "gender" : "M",
+    "login" : "alex111",
+    "password" : "alex",
+    "state" : "CA"
+  },
+  "uy-22911" : {
+    "city" : "Cupertino",
+    "country" : "US",
+    "email" : "shirley888@hotmail.com",
+    "gender" : "F",
+    "login" : "shirley888",
+    "password" : "shirley",
+    "state" : "CA"
+  },
+  "us-224111" : {
+    "city" : "San Jose",
+    "country" : "US",
+    "email" : "jenny333@oracle.com",
+    "gender" : "F",
+    "login" : "jenny333",
+    "password" : "jenny",
+    "state" : "CA"
+  },
+  "ua-442911" : {
+    "city" : "New York",
+    "country" : "US",
+    "email" : "sam555@gmail.com",
+    "gender" : "F",
+    "login" : "sam555",
+    "password" : "sam",
+    "state" : "NY"
+  },
+  "ua-00941111" : {
+    "city" : "Montery Park",
+    "country" : "US",
+    "email" : "tina777@mp23.com",
+    "gender" : "F",
+    "login" : "tina777",
+    "password" : "tina",
+    "state" : "CA"
+  },
+  "uz-2253" : {
+    "city" : "Hillsbrough",
+    "country" : "US",
+    "email" : "dorian222@mymail.net",
+    "gender" : "F",
+    "login" : "dorian222",
+    "password" : "dorian",
+    "state" : "CA"
+  },
+  "ux-3125" : {
+    "city" : "Sunnyvale",
+    "country" : "US",
+    "email" : "carol111@yahoo.com",
+    "gender" : "F",
+    "login" : "carol111",
+    "password" : "carol",
+    "state" : "CA"
+  }
+}

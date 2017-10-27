@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {AngularFireDatabase} from 'angularfire2/database';
 
-const ENDPOINT = '../assets/products.json'; // TODO later from server
 const CATEGORIES = ['All Categories',
   'Sports & Outdoor', 'Travel Accessory', 'Camping Gear', 'Pool/Beach Accessory', 'Home Accessory',
   'Wearable Tech', 'Presentation Gadget', 'Computer Accessory', 'Workspace Gadget', 'Bedtime product',
@@ -13,43 +10,16 @@ const CATEGORIES = ['All Categories',
 ];
 
 @Injectable()
+
 export class ProductService {
-  private productData;
-  private subject = new BehaviorSubject(null);
+  constructor(private _svc: AngularFireDatabase) { }
 
-  // get data right away
-  constructor(private _http: Http) { this.retrieveProductsFromSource(); }
-
-  // ---provide subscription
-  obtainProductStream(): Observable<any> {
-    return this.subject.asObservable();
-  }
-
-  // ---read data from external source, save internally, also send to subscribers
-  retrieveProductsFromSource() {
-    this._http.get(ENDPOINT).subscribe((res: Response) => {
-      this.productData = res.json();
-      console.log('[StorageService] products => ', this.productData);
-      this.subject.next(this.productData); // send to subscribers
-    });
+  retrieveProducts() {
+    return this._svc.list('/product').valueChanges();
   }
 
   getCategories() {
     return CATEGORIES;
-  }
-  getProductsByCategory(category) {
-    const ret = [];
-    for (let prod_idx = 0; prod_idx < this.productData.length; prod_idx++) {
-      // try to match all categories of this product
-      const cats = this.productData[prod_idx].category;
-      for (let cats_idx = 0; cats_idx < cats.length; cats_idx++) {
-        if (cats[cats_idx] === category) {
-          ret.push(this.productData[prod_idx]);
-          break;
-        }
-      }
-    }
-    return ret;
   }
 
 }

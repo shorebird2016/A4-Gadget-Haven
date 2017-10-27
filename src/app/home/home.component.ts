@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ProductService} from '../svc/product.service';
 import {Router} from '@angular/router';
+import {ProductService} from '../svc/product.service';
 
 @Component({
   selector: 'app-home',
@@ -9,9 +9,8 @@ import {Router} from '@angular/router';
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
-  constructor(private _svc: ProductService, private _router: Router) {
-// console.log('[HomeComp] CTOR()');
-  }
+  constructor(private _svc: ProductService, private _router: Router) {}
+
   productData; // master DB from service, use for carousel images
   productList; // actual displayed in thumbnails below carousel
   subProduct; // observer for product data
@@ -27,12 +26,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   // managing carousel related properties/methods
   curIndex = -1; forward = true; slideTimerId; cb_pos;
 
+  ngOnDestroy() {
+    clearInterval(this.slideTimerId); // in case the last one didn't stop
+    this.subProduct.unsubscribe();
+  }
+
   ngOnInit() {
-    // attach to product stream, when product data becomes available, setup carousel
-    this.subProduct = this._svc.obtainProductStream().subscribe(payload => {
-      if (payload === null) { return; } // initially null, skip
+    // attach to product listing from DB, when product data becomes available, setup carousel
+    this.subProduct = this._svc.retrieveProducts().subscribe(payload => {
+      console.log('[HomeComp] product listing <= ', payload);
       this.productData = payload;
-      // console.log('[HomeComp] ngOnInit(): products in');
       this.genCarouselImages(8); // after products data becomes available
       this.productList = this.productData;
       for (let idx = 1; idx < this.carouselImages.length; idx++) {
@@ -43,12 +46,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.cb_pos = 100 * (bw - 35 * this.carouselImages.length) / ( bw * 2);
       this.styleCircleBox = { 'left':  this.cb_pos + '%' };
     });
-  }
-
-  ngOnDestroy() {
-    clearInterval(this.slideTimerId); // in case the last one didn't stop
-    this.subProduct.unsubscribe();
-    // console.log('[HomeComp] ngOnDestroy()');
   }
 
   // randomly select N images from 'full-image' folder of products and use for carousel slides
@@ -142,7 +139,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     return { 'opacity': this.styleOpacityCircle[index] };
   }
 
-  // user clicks "show me more" on carousel or click on thumbnail or item on search bar
+  // user clicks 'show me more' on carousel or click on thumbnail or item on search bar
   navToProduct(product_obj) { // use product id as routing param, nav to product page
     this._router.navigate(['/product', product_obj.id]);
   }

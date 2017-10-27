@@ -7,9 +7,9 @@
       <a routerLink="/home"><img src="../assets/logo.png" class="img img-rounded pull-right logo"></a>
     </div>
     <div>
-      <label class="field-label-style">Login name</label>
-      <input class="field-style" placeholder="your screen name" required [disabled]="loginUser"
-             [(ngModel)]="profileLoginName">
+      <label class="field-label-style">Login</label>
+      <input class="field-style" placeholder="your screen name" required
+             [(ngModel)]="profileLogin">
 
       <label class="field-label-style">Password</label>
       <input type="password" class="field-style" placeholder="1234passwOrd" required
@@ -45,8 +45,8 @@
       <br/>
 
       <label class="field-label-style">Gender</label>
-      <input type="radio" class="gender" value="male" [(ngModel)]="profileGender">Male
-      <input type="radio" class="gender" value="female" [(ngModel)]="profileGender">Female
+      <input type="radio" class="gender" value="M" [(ngModel)]="profileGender">Male
+      <input type="radio" class="gender" value="F" [(ngModel)]="profileGender">Female
       <br/>
       <input type="checkbox" id="agree-id" checked [(ngModel)]="profileAgree">Agree to terms
       <input type="submit" class="field-style signup-style" value="Save" (click)="saveProfile()">
@@ -55,3 +55,4 @@
 </div>
 
 
+<!--[disabled]="loginUser"-->

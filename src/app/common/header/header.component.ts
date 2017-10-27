@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output, OnDestroy} from '@angular/core';
-import {ProductService} from '../../svc/product.service';
+import {Component, EventEmitter, OnInit, Output, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
-import {StorageService} from '../../svc/storage.service';
+import {UserService} from '../../svc/user.service';
+import {ProductService} from '../../svc/product.service';
 
 @Component({
   selector: 'app-header',
@@ -11,49 +11,53 @@ import {StorageService} from '../../svc/storage.service';
 
 export class HeaderComponent implements OnInit, OnDestroy {
   @Output() filter = new EventEmitter();
-  constructor(private _stor_svc: StorageService, private _prod_svc: ProductService,
-              private _router: Router) {
-// console.log('[HeaderComp] CTOR()');
+  constructor(private _prd_svc: ProductService,
+              private _user_svc: UserService, private _router: Router) {
   }
   curCategory = 'All Categories';
   searchString: string;
   productList; // subset after filtering
   matchingProducts;
   showMatchList;
-
   productData; // full list from service
   categories;
-  loginUser; // just name
-  users;
+  loginUser: string; // login name
   subLiu; subUsers; subProd;
+  dbUsers;
 
   ngOnInit() {
-    // attach to product stream
-    this.subProd = this._prod_svc.obtainProductStream().subscribe(payload => {
+    // attach to product listing stream
+    this.categories = this._prd_svc.getCategories(); // need no subscription, static data
+    this.subProd = this._prd_svc.retrieveProducts().subscribe(payload => {
+      console.log('[HeaderComp] product listing <= ', payload);
       this.productData = payload;
-    });
-    this.categories = this._prod_svc.getCategories(); // need no subscription, static data
-
-    // attch to login user stream
-    this.subLiu = this._stor_svc.obtainLoginUserStream().subscribe(payload => {
-      console.log('[HeaderComp] login user <= ', payload);
-      this.loginUser = payload ? payload.loginName : ''; // stream update
     });
 
     // attach to users stream
-    this.subUsers = this._stor_svc.obtainUsersStream().subscribe(payload => {
+    this.subUsers = this._user_svc.getUserList().subscribe(payload => {
+      this.dbUsers = payload;
       console.log('[HeaderComp] users <= ', payload);
-      this.users = payload;
     });
-// console.log('[HeaderComp] ngOnInit()');
+
+    // attch to login user stream
+    this.subLiu = this._user_svc.getLoginUser().subscribe(payload => {
+      this.loginUser = (payload !== null) ? payload.login : null;
+      // if (payload !== null) {
+      //   this.loginUser = payload.login;
+      // } else { this.loginUser = null; }
+      console.log('[HeaderComp] login user <= ', this.loginUser);
+    });
   }
+
   ngOnDestroy() {
     this.subProd.unsubscribe();
     this.subLiu.unsubscribe();
     this.subUsers.unsubscribe();
   }
 
-  logout() { this._stor_svc.setLoginUser(null); }
+  logout() {
+    this._user_svc.setLoginUser(null);
+  }
 
   showCategoryProducts(category) {
     this.curCategory = category;

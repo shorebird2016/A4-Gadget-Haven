@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {CartService} from '../svc/cart.service';
-import {ProductService} from '../svc/product.service';
+import {LsCartService} from '../svc/lscart.service';
 import {Router} from '@angular/router';
+import {ProductService} from '../svc/product.service';
 
 @Component({
   selector: 'app-cart',
@@ -10,13 +10,14 @@ import {Router} from '@angular/router';
 })
 
 export class CartComponent implements OnInit {
-  constructor(private _cart_svc: CartService, private _prod_svc: ProductService, private _router: Router) { }
+  constructor(private _cart_svc: LsCartService, private _prod_svc: ProductService, private _router: Router) { }
 
   productData; subProd;
 
   ngOnInit() {
     // attach to product stream
-    this.subProd = this._prod_svc.obtainProductStream().subscribe(payload => {
+    this.subProd = this._prod_svc.retrieveProducts().subscribe(payload => {
+      console.log('[CartComp] product listing <= ', payload);
       this.productData = payload;
     });
   }

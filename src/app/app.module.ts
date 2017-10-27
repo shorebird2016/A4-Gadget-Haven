@@ -17,9 +17,16 @@ import { ResetPasswordComponent } from './profile/reset-password/reset-password.
 import { AccountComponent } from './profile/account/account.component';
 import { AdminComponent } from './profile/admin/admin.component';
 import { CompCommComponent } from './reference/comp-comm/comp-comm.component';
+import {LsCartService} from './svc/lscart.service';
+import {AngularFireModule} from 'angularfire2';
+import {environment} from '../environments/environment';
+import {UserService} from './svc/user.service';
+import {AngularFireDatabaseModule} from 'angularfire2/database';
+import {AngularFireDatabase} from 'angularfire2/database';
+import { NgListComponent } from './animation/ng-list/ng-list.component';
 import {ProductService} from './svc/product.service';
-import {StorageService} from './svc/storage.service';
-import {CartService} from "./svc/cart.service";
+import {CartService} from './svc/cart.service';
+import {OrderService} from './svc/order.service';
 
 const config: WarehouseConfig = {
   driver: DRIVER_TYPE.LOCALSTORAGE,
@@ -47,13 +54,16 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent, HomeComponent, ProductComponent, CartComponent, CheckoutComponent,
     HeaderComponent, FooterComponent, LoginComponent, ResetPasswordComponent, AccountComponent,
-    AdminComponent, CompCommComponent
+    AdminComponent, CompCommComponent, NgListComponent
   ],
   imports: [
     BrowserModule, RouterModule.forRoot(appRoutes), HttpModule, FormsModule,
-    NgxWarehouseModule.configureWarehouse(config)
+    NgxWarehouseModule.configureWarehouse(config),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule
   ],
-  providers: [ProductService, StorageService, CartService],
+  providers: [LsCartService, UserService, AngularFireDatabase, ProductService,
+    CartService, OrderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

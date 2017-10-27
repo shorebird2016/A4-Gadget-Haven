@@ -32,7 +32,8 @@
       <select *ngIf="curProduct.inventory > 0" [(ngModel)]="purchaseQuantity">{{purchaseQuantity}}
         <option *ngFor="let QTY of comboList" [ngValue]="QTY">{{QTY}}</option>
       </select>
-      <button class="btn-main btn-primary"  *ngIf="curProduct.inventory > 0" (click)="addToCart(curProduct.id)">
+      <button class="btn-main btn-primary"  *ngIf="curProduct.inventory > 0 && loginUser"
+              (click)="addToCart(curProduct.id)">
         Add to cart</button></div>
   </div>
 </div>

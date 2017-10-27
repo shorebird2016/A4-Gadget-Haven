@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {StorageService} from '../../svc/storage.service';
+import {UserService} from '../../svc/user.service';
 
 @Component({
   selector: 'app-admin',
@@ -8,24 +8,28 @@ import {StorageService} from '../../svc/storage.service';
 })
 
 export class AdminComponent implements OnInit, OnDestroy {
-  constructor(private _svc: StorageService) { }
+  constructor(private _usr_svc: UserService) { }
 
   private subUser;
-  private users;
+  private usersRef; // db node for 'user'
+  users;
 
   ngOnInit() {
-    this.subUser = this._svc.obtainUsersStream().subscribe(data => this.users = data);
+    this.usersRef = this._usr_svc.getUserList();
+    this.subUser = this.usersRef.subscribe(payload => { // subscription
+      this.users = payload;
+    });
   }
   ngOnDestroy() {
     this.subUser.unsubscribe();
   }
 
   removeUser(usr) {
-    this._svc.removeUser(usr);
+    this.usersRef.remove(usr.$key);
   }
 
   logout() {
     // mark login user empty in local storage
-    this._svc.setLoginUser(null);
+    this._usr_svc.setLoginUser(null);
   }
 }

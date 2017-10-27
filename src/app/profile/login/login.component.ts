@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {StorageService} from '../../svc/storage.service';
+import {UserService} from '../../svc/user.service';
 
 @Component({
   selector: 'app-login',
@@ -10,30 +10,23 @@ import {StorageService} from '../../svc/storage.service';
 
 export class LoginComponent implements OnInit, OnDestroy {
   @ViewChild('MSG_DLG') dialog;
-  constructor(private _stor_svc: StorageService, private _router: Router,
-              private _rndr: Renderer2) {
-// console.log('[LoginComp] CTOR()');
+  constructor(private _router: Router,
+              private _user_svc: UserService, private _rndr: Renderer2) {
   }
 
   users; subUsers; loginUser; subLiu;
-  profileLoginName; profilePassword; profilePasswordConfirm; profileEmail; profileCountry;
+  profileLogin; profilePassword; profilePasswordConfirm; profileEmail; profileCountry;
   profileState; profileCity; profileGender;
 
   // Life cycle callbacks
   ngOnInit() {
-// console.log('[LoginComp] ngOnInit()');
-    this.subLiu = this._stor_svc.obtainLoginUserStream().subscribe(data => {
-      this.loginUser = data;
-console.log('[LoginComp] got loginUser => ', data);
-    });
-    this.subUsers = this._stor_svc.obtainUsersStream().subscribe(data => {
-      this.users = data;
-console.log('[LoginComp] got users => ', data);
+    this.subUsers = this._user_svc.getUserList().subscribe(payload => {
+      this.users = payload;
+      console.log('[LoginComp] users <= ', payload);
     });
   }
+
   ngOnDestroy() {
-console.log('[LoginComp] ngOnDestroy()');
-    this.subLiu.unsubscribe();
     this.subUsers.unsubscribe();
   }
 
@@ -47,10 +40,10 @@ console.log('[LoginComp] ngOnDestroy()');
     // look for this user in users
     let found = false;
     for (let idx = 0; idx < this.users.length; idx++) {
-      const login = this.users[idx].loginName;
+      const login = this.users[idx].login;
       const pwd = this.users[idx].password;
       if (login === login_id && pwd === login_password) { // found matching user, populate profile
-        this.profileLoginName = this.users[idx].loginName;
+        this.profileLogin = this.users[idx].login;
         this.profilePassword = pwd;
         this.profilePasswordConfirm = pwd;
         this.profileEmail = this.users[idx].email;
@@ -60,7 +53,7 @@ console.log('[LoginComp] ngOnDestroy()');
         this.profileGender = this.users[idx].gender;
 
         // let service track logged in user
-        this._stor_svc.setLoginUser(this.users[idx]);
+        this._user_svc.setLoginUser(this.users[idx]); // send object
         this._router.navigate(['/home'/*, login_id*/]); // TODO handle ID
         found = true;
         break;
